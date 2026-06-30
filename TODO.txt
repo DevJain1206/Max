@@ -1,0 +1,54 @@
+TODO - Voice Mode for MAX Chatbox
+===================================
+
+1. **Select wake‑word detection library**
+   - Evaluate Mycroft Precise, Vosk‑tiny, OpenWakeWord, PocketSphinx, etc.
+   - Decide whether to purchase a commercial Porcupine key or use an open‑source alternative.
+
+2. **Obtain / generate required API keys**
+   - Whisper (OpenAI) or Google Speech‑to‑Text key.
+   - ElevenLabs / Google Cloud / Azure TTS key.
+   - LLM key (Claude, OpenAI, etc.).
+   - Store all keys securely (e.g., .env or Windows Credential Manager).
+
+3. **Add UI element**
+   - Add a button (or visual indicator) for “Voice mode”.
+   - Hook click / press event to start the voice pipeline.
+
+4. **Implement audio capture**
+   - Use Web‑Audio API (if web/Electron) or NAudio/PortAudio for desktop.
+   - Ensure 16 kHz PCM mono capture (required by most ASR/TTS services).
+
+5. **Integrate wake‑word detection**
+   - Set up chosen library (e.g., Precise engine, Vosk‑tiny WASM, etc.).
+   - Train a custom model for the phrase "hey max" if needed.
+   - Connect detection event to start the audio‑capture pipeline.
+
+6. **Plug in Speech‑to‑Text (ASR)**
+   - Wrap Whisper / Google Speech API call.
+   - Return transcript to the existing chat LLM.
+
+7. **Feed transcript to the LLM**
+   - Re‑use the current chat‑box request flow.
+
+8. **Add Text‑to‑Speech (TTS)**
+   - Choose ElevenLabs, Google Cloud TTS, Azure Speech, or an open‑source model.
+   - Optionally add SSML for voice style, speed, emphasis.
+
+9. **Create a lightweight state manager**
+   - States: idle → listening → processing → speaking.
+   - Prevent overlapping recordings/playback.
+
+10. **Testing & verification**
+    - Unit‑test each stage (wake‑word, ASR, LLM, TTS).
+    - End‑to‑end manual test: say "hey max", watch transcript, hear spoken reply.
+    - Add automated regression test if possible.
+
+11. **Documentation**
+    - Update README with chosen libraries and required environment variables.
+    - Add a quick‑start guide for developers to run the voice mode locally.
+
+12. **Future enhancements (optional)**
+    - Add Voice Activity Detection (VAD) for auto‑stop.
+    - Support multiple wake‑words or language localisation.
+    - Add fallback offline TTS (e.g., Coqui TTS) for no‑internet scenarios.
